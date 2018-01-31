@@ -1,7 +1,5 @@
 package org.home.mazi.csroulette.view;
 
-import org.home.mazi.csroulette.model.RouletteResult;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;

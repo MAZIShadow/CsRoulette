@@ -1,31 +1,59 @@
 package org.home.mazi.csroulette.model;
 
-public class RouletteResult {
+import com.google.gson.annotations.Expose;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.io.Serializable;
+
+public class RouletteResult implements Serializable {
     private String name;
-    private String path;
     private String description;
+    private String imagePath;
+    @Expose
+    private BufferedImage image;
+
+    public RouletteResult() {
+    }
+
+    public RouletteResult(String name, String description, String imagePath) {
+        this.name = name;
+        this.description = description;
+        this.imagePath = imagePath;
+    }
 
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPath() {
-        return path;
-    }
-
-    public void setPath(String path) {
-        this.path = path;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public BufferedImage getImage() {
+
+        if (image == null) {
+
+            File imageFile = new File(imagePath);
+
+            if (!imageFile.exists()) {
+                imageFile = new File(ClassLoader.getSystemClassLoader().getResource("NoResult.png").getFile());
+            }
+
+            try {
+                image = ImageIO.read(imageFile);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+        return image;
     }
 }
