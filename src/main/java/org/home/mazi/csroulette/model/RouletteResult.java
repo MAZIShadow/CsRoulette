@@ -16,6 +16,7 @@ public class RouletteResult implements Serializable {
     private BufferedImage image;
 
     public RouletteResult() {
+
     }
 
     public RouletteResult(String name, String description, String imagePath) {
@@ -46,14 +47,33 @@ public class RouletteResult implements Serializable {
                 imageFile = new File(ClassLoader.getSystemClassLoader().getResource("NoResult.png").getFile());
             }
 
-            try {
-                image = ImageIO.read(imageFile);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            image = loadImageFromFile(imageFile);
         }
 
 
         return image;
+    }
+
+    private static BufferedImage loadImageFromFile(File imageFile) {
+        try {
+            return ImageIO.read(imageFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public void loadImage(File f) {
+
+        String imagePath = f.getAbsolutePath().replaceAll("\\.json$", "\\.png");
+
+        File imageFile = new File(imagePath);
+
+        if (!imageFile.exists()) {
+            return;
+        }
+
+        image = loadImageFromFile(imageFile);
     }
 }

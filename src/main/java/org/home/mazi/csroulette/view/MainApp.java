@@ -7,7 +7,7 @@ import javax.swing.*;
 public class MainApp extends JFrame {
     private JButton btnSpin;
     private JPanel mainPanel;
-    private JImagePanel imagePanel;
+    private JRouletteResultPanel imagePanel;
 
     private void prepareFrame() {
         setContentPane(mainPanel);
@@ -27,7 +27,7 @@ public class MainApp extends JFrame {
         return btnSpin;
     }
 
-    public JImagePanel getImagePanel() {
+    public JRouletteResultPanel getImagePanel() {
         return imagePanel;
     }
 }

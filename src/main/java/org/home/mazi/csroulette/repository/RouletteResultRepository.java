@@ -5,10 +5,10 @@ import org.home.mazi.csroulette.model.RouletteResult;
 
 import java.io.File;
 import java.io.FileReader;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
 
 public class RouletteResultRepository implements IRouletteResultRepository {
 
@@ -17,17 +17,20 @@ public class RouletteResultRepository implements IRouletteResultRepository {
 
         ArrayList<RouletteResult> list = new ArrayList<>();
 
-        File file = new File("./data/");
+        File files = new File("./data/");
 
-        if (!file.exists() || !file.isDirectory()) {
+        if (!files.exists() || !files.isDirectory()) {
             return list;
         }
 
-        Arrays.stream(file.listFiles()).forEach(f -> {
+        Arrays.stream(files.listFiles((directory, fileName) -> fileName.endsWith(".json"))).forEach(f -> {
             Gson json = new Gson();
 
             try (FileReader fileReader = new FileReader(f)) {
-                list.add(json.fromJson(fileReader, RouletteResult.class));
+
+                RouletteResult rouletteResult = json.fromJson(fileReader, RouletteResult.class);
+                rouletteResult.loadImage(f);
+                list.add(rouletteResult);
 
             } catch (IOException e) {
                 e.printStackTrace();
