@@ -9,6 +9,7 @@ import java.awt.image.BufferedImage;
 public class JRouletteResultPanel extends JPanel {
 
     private RouletteResult rouletteResult;
+    private String debugText;
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -21,6 +22,21 @@ public class JRouletteResultPanel extends JPanel {
         printImage(g, rouletteResult.getImage(), this);
         printHeadline(g, rouletteResult.getName(), this);
         printDescription(g, rouletteResult.getDescription(), this);
+        printDebugText(g);
+    }
+
+    public void printDebugText(String debugText) {
+        this.debugText = debugText;
+    }
+
+    private void printDebugText(Graphics g) {
+
+        if (debugText == null) {
+            return;
+        }
+
+        g.setColor(Color.RED);
+        g.drawChars(debugText.toCharArray(), 0, debugText.length(), 15 ,15);
     }
 
     private static void printImage(Graphics g, BufferedImage bufferedImage, JRouletteResultPanel panel) {

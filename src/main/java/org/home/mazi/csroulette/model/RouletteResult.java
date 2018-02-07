@@ -1,19 +1,38 @@
 package org.home.mazi.csroulette.model;
 
-import com.google.gson.annotations.Expose;
-
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Objects;
 
 public class RouletteResult implements Serializable {
     private String name;
     private String description;
     private String imagePath;
-    @Expose
-    private BufferedImage image;
+    private transient BufferedImage image;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        RouletteResult that = (RouletteResult) o;
+
+        return Objects.equals(getName(), that.getName());
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(getName());
+    }
 
     public RouletteResult() {
 
@@ -66,9 +85,9 @@ public class RouletteResult implements Serializable {
 
     public void loadImage(File f) {
 
-        String imagePath = f.getAbsolutePath().replaceAll("\\.json$", "\\.png");
+        String tmpImagePath = f.getAbsolutePath().replaceAll("\\.json$", "\\.png");
 
-        File imageFile = new File(imagePath);
+        File imageFile = new File(tmpImagePath);
 
         if (!imageFile.exists()) {
             return;
