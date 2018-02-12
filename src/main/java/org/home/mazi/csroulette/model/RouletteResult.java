@@ -1,5 +1,7 @@
 package org.home.mazi.csroulette.model;
 
+import org.home.mazi.csroulette.repository.ResourcesRepository;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -63,7 +65,7 @@ public class RouletteResult implements Serializable {
             File imageFile = new File(imagePath);
 
             if (!imageFile.exists()) {
-                imageFile = new File(ClassLoader.getSystemClassLoader().getResource("NoResult.png").getFile());
+                imageFile = new File(ResourcesRepository.Instance.getPathForResource("NoResult.png"));
             }
 
             image = loadImageFromFile(imageFile);
