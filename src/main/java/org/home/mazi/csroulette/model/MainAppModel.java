@@ -10,11 +10,21 @@ public class MainAppModel implements IMainAppModel {
     private IRouletteResultRepository repository;
     private ArrayList<RouletteResult> events;
     private ArrayList<RouletteResult> drawnItems;
+    private RouletteResult selectedRouletteResult;
 
     public MainAppModel(IRouletteResultRepository rouletteResultRepository) {
         repository = rouletteResultRepository;
         events = repository.getDataItems();
         drawnItems = new ArrayList<>();
+    }
+
+    public RouletteResult getSelectedRouletteResult() {
+        return selectedRouletteResult;
+    }
+
+    @Override
+    public boolean IsEventsEmpty() {
+        return events.isEmpty();
     }
 
     @Override
@@ -26,18 +36,21 @@ public class MainAppModel implements IMainAppModel {
 
         if (drawnItems.size() > events.size() / 2 + 1) {
             events.addAll(drawnItems);
+            RouletteResult stayElement = drawnItems.stream().reduce((a, b) -> b).orElse(null);
             drawnItems.clear();
+            drawnItems.add(stayElement);
+            events.remove(stayElement);
         }
 
         Random r = new Random();
         int index = r.nextInt(events.size());
-        RouletteResult result = index >= events.size() ? null : events.get(index);
+        selectedRouletteResult = index >= events.size() ? null : events.get(index);
 
-        if (result != null) {
-            events.remove(result);
-            drawnItems.add(result);
+        if (selectedRouletteResult != null) {
+            events.remove(selectedRouletteResult);
+            drawnItems.add(selectedRouletteResult);
         }
 
-        return result;
+        return selectedRouletteResult;
     }
 }

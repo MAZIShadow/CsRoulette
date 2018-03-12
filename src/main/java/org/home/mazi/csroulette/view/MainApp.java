@@ -8,6 +8,7 @@ public class MainApp extends JFrame {
     private JButton btnSpin;
     private JPanel mainPanel;
     private JRouletteResultPanel imagePanel;
+    private IMainAppModel model;
 
     private void prepareFrame() {
         setContentPane(mainPanel);
@@ -15,11 +16,13 @@ public class MainApp extends JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setVisible(true);
+        setResizable(false);
+        btnSpin.setEnabled(!model.IsEventsEmpty());
     }
-
 
     public MainApp(IMainAppModel model)  {
         super("CsRoulette App");
+        this.model = model;
         prepareFrame();
     }
 

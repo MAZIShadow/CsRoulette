@@ -6,6 +6,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -65,14 +66,21 @@ public class RouletteResult implements Serializable {
             File imageFile = new File(imagePath);
 
             if (!imageFile.exists()) {
-                imageFile = new File(ResourcesRepository.Instance.getPathForResource("NoResult.png"));
+                image = loadImageFromInputStream(ResourcesRepository.Instance.getInputStreamForResourceName("NoResult.png"));
             }
-
-            image = loadImageFromFile(imageFile);
         }
 
-
         return image;
+    }
+
+    private static BufferedImage loadImageFromInputStream(InputStream inputStream) {
+        try {
+            return ImageIO.read(inputStream);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     private static BufferedImage loadImageFromFile(File imageFile) {

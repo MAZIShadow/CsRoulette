@@ -22,7 +22,7 @@ public class JRouletteResultPanel extends JPanel {
         printImage(g, rouletteResult.getImage(), this);
         printHeadline(g, rouletteResult.getName(), this);
         printDescription(g, rouletteResult.getDescription(), this);
-        printDebugText(g);
+        //printDebugText(g);
     }
 
     public void printDebugText(String debugText) {
@@ -36,11 +36,11 @@ public class JRouletteResultPanel extends JPanel {
         }
 
         g.setColor(Color.RED);
-        g.drawChars(debugText.toCharArray(), 0, debugText.length(), 15 ,15);
+        g.drawChars(debugText.toCharArray(), 0, debugText.length(), 15, 15);
     }
 
     private static void printImage(Graphics g, BufferedImage bufferedImage, JRouletteResultPanel panel) {
-        g.drawImage(bufferedImage, panel.getWidth() / 2 - bufferedImage.getWidth() / 2, 0, panel);
+        g.drawImage(bufferedImage, panel.getWidth() / 2 - bufferedImage.getWidth() / 2, panel.getHeight() / 2 - bufferedImage.getHeight() / 2, panel);
     }
 
     private static void printHeadline(Graphics g, String text, JRouletteResultPanel panel) {

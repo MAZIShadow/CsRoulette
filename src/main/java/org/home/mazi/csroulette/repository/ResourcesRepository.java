@@ -1,15 +1,17 @@
 package org.home.mazi.csroulette.repository;
 
+import java.io.InputStream;
+
 public enum ResourcesRepository {
     Instance;
 
-    public String getPathForResource(String resourceName) {
+    public InputStream getInputStreamForResourceName(String resourceName) {
         try {
-            return ClassLoader.getSystemClassLoader().getResource(resourceName).getFile();
+            return ClassLoader.getSystemClassLoader().getResourceAsStream(resourceName);
         }
         catch(Exception ex) {
         }
 
-        return "";
+        return null;
     }
 }
