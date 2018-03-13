@@ -14,6 +14,7 @@ public class RouletteResult implements Serializable {
     private String name;
     private String description;
     private String imagePath;
+    private String soundEventPath;
     private transient BufferedImage image;
 
     @Override
@@ -104,5 +105,9 @@ public class RouletteResult implements Serializable {
         }
 
         image = loadImageFromFile(imageFile);
+    }
+
+    public String getSoundEventPath() {
+        return soundEventPath;
     }
 }

@@ -1,15 +1,13 @@
 package org.home.mazi.csroulette.controller;
 
-import javazoom.jl.player.Player;
 import org.home.mazi.csroulette.model.IMainAppModel;
 import org.home.mazi.csroulette.model.RouletteResult;
-import org.home.mazi.csroulette.repository.ResourcesRepository;
+import org.home.mazi.csroulette.repository.MusicRepository;
 import org.home.mazi.csroulette.view.MainApp;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.InputStream;
 import java.util.List;
 
 public class MainController {
@@ -24,18 +22,25 @@ public class MainController {
 
     private class SpinRouletteListener implements ActionListener {
 
-        private void playSound() {
+        private MusicRepository musicRepository = new MusicRepository();
 
-            Thread t = new Thread(() -> {
-                try (InputStream inputStream = ResourcesRepository.Instance.getInputStreamForResourceName("GameShowWheelSpin.mp3")) {
-                    Player p = new Player(inputStream);
-                    p.play();
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-            });
-            t.start();
+        private void doSoundEvent(RouletteResult selectedRouletteResult) {
+            String soundEvent = selectedRouletteResult.getSoundEventPath();
+
+            if (soundEvent == null || soundEvent.isEmpty()) {
+                return;
+            }
+
+            musicRepository.playMp3(soundEvent);
         }
+
+        private void doEventOnComplited(RouletteResult selectedRouletteResult) {
+
+            doSoundEvent(selectedRouletteResult);
+            JOptionPane.showMessageDialog(view, String.format("Selected rule: %s\n\n%s", selectedRouletteResult.getName(), selectedRouletteResult.getDescription()), null, JOptionPane.INFORMATION_MESSAGE);
+        }
+
+
 
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -57,7 +62,7 @@ public class MainController {
 
                         randomResult = model.getRandomResult();
                         publish(randomResult);
-                        playSound();
+                        musicRepository.playSound();
                         Thread.sleep(sleepTime);
                         sleepTime += sleepTimeStep;
 
@@ -89,8 +94,7 @@ public class MainController {
                 protected void done() {
                     super.done();
                     view.getSpinButton().setEnabled(true);
-                    RouletteResult selectedRouletteResult = model.getSelectedRouletteResult();
-                    JOptionPane.showMessageDialog(view, String.format("Selected rule: %s\n\n%s", selectedRouletteResult.getName(), selectedRouletteResult.getDescription()), null, JOptionPane.INFORMATION_MESSAGE);
+                    doEventOnComplited(model.getSelectedRouletteResult());
                 }
             };
 
